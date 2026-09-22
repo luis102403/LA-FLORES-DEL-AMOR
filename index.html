@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Para Mi Novia Excepcional</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Great+Vibes&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --paper-bg: #F9F4E8;
+            --paper-border: #D4C3A3;
+            --text-dark: #3A2A18;
+            --text-light: #5A442E;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff; 
+            overflow: hidden; 
+            font-family: 'Lora', serif;
+            touch-action: manipulation;
+        }
+
+        #start-btn-container {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            transition: opacity 1.5s ease, visibility 1.5s ease;
+            background-color: #ffffff;
+        }
+
+        #start-btn {
+            padding: 1.2rem 5rem;
+            font-size: 1.5rem;
+            letter-spacing: 5px;
+            color: #222;
+            background: transparent;
+            border: 2px solid #222;
+            border-radius: 50px;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-family: 'Cinzel', serif;
+            font-weight: 600;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            outline: none;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        #start-btn:hover {
+            background: #222;
+            color: #fff;
+            transform: scale(1.03);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+            letter-spacing: 7px;
+        }
+
+        #canvas-container {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        #pergamino-container {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 50%; 
+            height: 100%;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem;
+            pointer-events: none;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(30px);
+            transition: opacity 2.5s ease 2s, transform 2.5s ease 2s, visibility 2.5s ease 2s;
+        }
+
+        .pergamino {
+            background-color: var(--paper-bg);
+            background-image: 
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+            border-radius: 2px;
+            box-shadow: 
+                0 25px 50px -12px rgba(0, 0, 0, 0.25),
+                inset 0 0 60px rgba(139, 90, 43, 0.05);
+            padding: 4rem 3rem;
+            max-width: 550px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            pointer-events: auto;
+            position: relative;
+        }
+
+        .pergamino::before, .pergamino::after {
+            content: '';
+            position: absolute;
+            left: 10%;
+            width: 80%;
+            height: 4px;
+            border-top: 1px solid var(--paper-border);
+            border-bottom: 1px solid var(--paper-border);
+        }
+        .pergamino::before { top: 20px; }
+        .pergamino::after { bottom: 20px; }
+
+        #pergamino-container.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .titulo-poema {
+            font-family: 'Great Vibes', cursive;
+            font-size: 4.5rem;
+            color: var(--text-dark);
+            text-align: center;
+            margin-bottom: 1.5rem;
+            line-height: 1;
+            font-weight: 400;
+        }
+
+        .texto-poema {
+            font-family: 'Lora', serif;
+            font-size: 1.25rem;
+            line-height: 2;
+            color: var(--text-light);
+            text-align: center;
+            margin-bottom: 2.5rem;
+            font-style: italic;
+        }
+
+        .dedicatoria {
+            font-family: 'Cinzel', serif;
+            font-size: 0.9rem;
+            line-height: 1.8;
+            color: var(--text-dark);
+            text-align: center;
+            border-top: 1px dashed var(--paper-border);
+            padding-top: 2rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .pergamino::-webkit-scrollbar { width: 4px; }
+        .pergamino::-webkit-scrollbar-track { background: transparent; }
+        .pergamino::-webkit-scrollbar-thumb { background: var(--paper-border); border-radius: 10px; }
+
+        /* Estilos ajustados para evitar superposición */
+        #girlfriend-doll {
+            position: absolute;
+            bottom: 2%; 
+            left: 5%; /* Movida a la izquierda */
+            width: 25vw;
+            max-width: 220px; /* Tamaño ligeramente ajustado */
+            min-width: 120px;
+            opacity: 0;
+            transition: opacity 3.5s ease;
+            mix-blend-mode: multiply; 
+            z-index: 15;
+            pointer-events: none; 
+        }
+
+        @keyframes tenderFloat {
+            0% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-12px) scale(1.02); }
+            100% { transform: translateY(0px) scale(1); }
+        }
+
+        #girlfriend-doll.show {
+            opacity: 1;
+            animation: tenderFloat 4s ease-in-out infinite;
+        }
+
+        @media (max-width: 1024px) {
+            #pergamino-container {
+                width: 100%;
+                height: auto;
+                top: auto;
+                bottom: 0;
+                padding: 1.5rem;
+                padding-bottom: 2rem;
+            }
+            .pergamino {
+                max-width: 100%;
+                padding: 2.5rem 1.5rem;
+                max-height: 50vh;
+                background-color: rgba(249, 244, 232, 0.92); 
+                backdrop-filter: blur(5px);
+            }
+            .titulo-poema { font-size: 3.5rem; }
+            .texto-poema { font-size: 1.1rem; line-height: 1.8; }
+
+            #girlfriend-doll {
+                left: 2%; /* Más a la izquierda en celulares */
+                bottom: 50vh; 
+                max-width: 140px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="start-btn-container">
+        <button id="start-btn">Dar Clic</button>
+    </div>
+
+    <div id="canvas-container">
+        <canvas id="main-canvas"></canvas>
+        <img id="girlfriend-doll" src="Gemini_Generated_Image_z3yyeaz3yyeaz3yy.jpeg" alt="Mi hermosa novia con su ramo" onerror="this.src='https://placehold.co/220x400/transparent/3A2A18?text=Mi+Novia'" />
+    </div>
+
+    <div id="pergamino-container">
+        <div class="pergamino">
+            <h1 class="titulo-poema">Soneto XVII</h1>
+            
+            <div class="texto-poema">
+                <p>No te amo como si fueras rosa de sal, topacio<br>
+                o flecha de claveles que propagan el fuego:<br>
+                te amo como se aman ciertas cosas oscuras,<br>
+                secretamente, entre la sombra y el alma.</p>
+                <br>
+                <p>Te amo como la planta que no florece y lleva<br>
+                dentro de sí, escondida, la luz de aquellas flores,<br>
+                y gracias a tu amor vive oscuro en mi cuerpo<br>
+                el apretado aroma que ascendió de la tierra.</p>
+                <br>
+                <p>Te amo sin saber cómo, ni cuándo, ni de dónde,<br>
+                te amo directamente sin problemas ni orgullo:<br>
+                así te amo porque no sé amar de otra manera,</p>
+                <br>
+                <p>sino de este modo en que no soy ni eres,<br>
+                tan cerca que tu mano sobre mi pecho es mía,<br>
+                tan cerca que se cierran tus ojos con mi sueño.</p>
+                <p style="text-align: right; margin-top: 1.5rem; font-weight: 600; font-style: normal; font-size: 1.1rem;">- Pablo Neruda</p>
+            </div>
+
+            <div class="dedicatoria">
+                Para la novia más excepcional de este mundo.<br>
+                Gracias por florecer a mi lado <br>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('main-canvas');
+        const ctx = canvas.getContext('2d', { alpha: false });
+        const startBtn = document.getElementById('start-btn');
+        const btnContainer = document.getElementById('start-btn-container');
+        const pergaminoContainer = document.getElementById('pergamino-container');
+        const girlfriendDoll = document.getElementById('girlfriend-doll');
+
+        let width, height;
+        let isAnimating = false;
+        let isMobile = false;
+        
+        let branches = [];
+        let flowers = [];
+        let petals = [];
+        let sparkles = [];
+        let activeTips = []; 
+        let animationFrameId;
+
+        const colors = {
+            bg: '#ffffff',
+            treeDark: '#2C1B11',
+            treeMedium: '#3D2616',
+            treeLight: '#4A301D',
+            yellow: ['#FFD700', '#FFEB3B', '#FBC02D', '#FFF59D'],
+            lilac: ['#C8A2C8', '#E1BEE7', '#CE93D8', '#BA68C8']
+        };
+
+        function resize() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+            isMobile = width <= 1024;
+            
+            if (!isAnimating) {
+                ctx.fillStyle = colors.bg;
+                ctx.fillRect(0, 0, width, height);
+            }
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Sparkle {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.size = Math.random() * 3 + 1;
+                this.alpha = 0;
+                this.targetAlpha = Math.random() * 0.8 + 0.2;
+                this.fadeSpeed = Math.random() * 0.02 + 0.01;
+                this.state = 'in'; 
+                this.color = Math.random() > 0.5 ? '#FFF59D' : '#ffffff';
+            }
+            update() {
+                if (this.state === 'in') {
+                    this.alpha += this.fadeSpeed;
+                    if (this.alpha >= this.targetAlpha) this.state = 'out';
+                } else {
+                    this.alpha -= this.fadeSpeed;
+                }
+            }
+            draw(ctx) {
+                if (this.alpha <= 0) return;
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        class FallingPetal {
+            constructor(x, y, colorArr) {
+                this.x = x;
+                this.y = y;
+                this.color = colorArr[Math.floor(Math.random() * colorArr.length)];
+                this.size = Math.random() * 4 + 3;
+                this.vx = (Math.random() - 0.5) * 1.5;
+                this.vy = Math.random() * 1.5 + 0.5;
+                this.angle = Math.random() * Math.PI * 2;
+                this.spin = (Math.random() - 0.5) * 0.1;
+                this.wobble = Math.random() * Math.PI * 2;
+                this.wobbleSpeed = Math.random() * 0.05 + 0.02;
+                this.alpha = 1;
+            }
+            update() {
+                this.x += this.vx + Math.sin(this.wobble) * 1.5;
+                this.y += this.vy;
+                this.wobble += this.wobbleSpeed;
+                this.angle += this.spin;
+                if (this.y > height - 50) {
+                    this.alpha -= 0.01;
+                }
+            }
+            draw(ctx) {
+                if (this.alpha <= 0) return;
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.angle);
+                ctx.globalAlpha = this.alpha;
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.ellipse(0, 0, this.size, this.size * 0.6, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        class Flower {
+            constructor(x, y, delay = 0) {
+                this.x = x + (Math.random() - 0.5) * 20; 
+                this.y = y + (Math.random() - 0.5) * 20;
+                this.maxRadius = Math.random() * 6 + 4;
+                this.radius = 0;
+                this.growRate = Math.random() * 0.2 + 0.1;
+                this.delay = delay;
+                this.active = false;
+                
+                const isLilac = Math.random() > 0.4;
+                const palette = isLilac ? colors.lilac : colors.yellow;
+                this.color = palette[Math.floor(Math.random() * palette.length)];
+                this.centerColor = isLilac ? '#FFF59D' : '#FFFFFF'; 
+                this.angle = Math.random() * Math.PI * 2;
+                this.petals = Math.floor(Math.random() * 2) + 5; 
+            }
+
+            update() {
+                if (this.delay > 0) {
+                    this.delay--;
+                    return;
+                }
+                this.active = true;
+                if (this.radius < this.maxRadius) {
+                    this.radius += this.growRate;
+                }
+            }
+
+            draw(ctx) {
+                if (!this.active || this.radius <= 0.1) return;
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.angle);
+                
+                ctx.fillStyle = this.color;
+                for(let i=0; i<this.petals; i++) {
+                    ctx.beginPath();
+                    ctx.ellipse(0, this.radius, this.radius * 0.45, this.radius * 1.2, 0, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.rotate((Math.PI * 2) / this.petals);
+                }
+                
+                ctx.beginPath();
+                ctx.arc(0, 0, this.radius * 0.35, 0, Math.PI * 2);
+                ctx.fillStyle = this.centerColor;
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        class OrganicBranch {
+            constructor(startX, startY, angle, length, width, depth, maxDepth) {
+                this.startX = startX;
+                this.startY = startY;
+                this.angle = angle;
+                this.length = length;
+                this.baseWidth = width;
+                this.depth = depth;
+                this.maxDepth = maxDepth;
+                
+                let curveAmount = (Math.random() - 0.5) * 1.2;
+                if (depth === 0) curveAmount = (Math.random() - 0.5) * 0.3; 
+                
+                this.cpX = this.startX + Math.cos(this.angle + curveAmount) * (this.length * 0.6);
+                this.cpY = this.startY + Math.sin(this.angle + curveAmount) * (this.length * 0.6);
+                
+                this.endX = this.startX + Math.cos(this.angle) * this.length;
+                this.endY = this.startY + Math.sin(this.angle) * this.length;
+                
+                this.progress = 0;
+                this.speed = 0.015 + (0.005 * depth); 
+                this.children = [];
+                this.spawned = false;
+                this.finished = false;
+            }
+
+            getPoint(t) {
+                const u = 1 - t;
+                const tt = t * t;
+                const uu = u * u;
+                let x = uu * this.startX + 2 * u * t * this.cpX + tt * this.endX;
+                let y = uu * this.startY + 2 * u * t * this.cpY + tt * this.endY;
+                return {x, y};
+            }
+
+            update() {
+                if (this.progress < 1) {
+                    this.progress += this.speed;
+                    if (this.progress > 1) this.progress = 1;
+                } else {
+                    if (!this.finished) {
+                        this.finished = true;
+                        if (this.depth === this.maxDepth) {
+                            activeTips.push({x: this.endX, y: this.endY});
+                        }
+                    }
+
+                    if (!this.spawned) {
+                        this.spawned = true;
+                        
+                        if (this.depth < this.maxDepth) {
+                            let numChildren = Math.random() > 0.3 ? 2 : 3;
+                            if (this.depth === 0) numChildren = 3; 
+
+                            let spread = 1.0; 
+                            let startAngle = this.angle - spread/2;
+                            
+                            for(let i=0; i<numChildren; i++) {
+                                let childAngle = startAngle + (spread / (numChildren > 1 ? numChildren-1 : 1)) * i + (Math.random()*0.3-0.15);
+                                let childLength = this.length * (0.7 + Math.random()*0.15);
+                                let childWidth = this.baseWidth * 0.65;
+                                
+                                if (childAngle > 0) childAngle -= 0.2;
+                                if (childAngle < -Math.PI) childAngle += 0.2;
+
+                                branches.push(new OrganicBranch(this.endX, this.endY, childAngle, childLength, childWidth, this.depth+1, this.maxDepth));
+                            }
+                        } else {
+                            let numFlowers = Math.floor(Math.random() * 12) + 8;
+                            for(let f=0; f<numFlowers; f++) {
+                                flowers.push(new Flower(this.endX, this.endY, Math.floor(Math.random() * 30)));
+                            }
+                        }
+                    }
+                }
+            }
+
+            draw(ctx) {
+                if (this.progress <= 0) return;
+
+                if (this.baseWidth > 15) ctx.strokeStyle = colors.treeDark;
+                else if (this.baseWidth > 5) ctx.strokeStyle = colors.treeMedium;
+                else ctx.strokeStyle = colors.treeLight;
+
+                const segments = 15;
+                const limit = Math.floor(this.progress * segments);
+                
+                let prevPt = {x: this.startX, y: this.startY};
+                
+                for(let i = 1; i <= segments; i++) {
+                    let t = i / segments;
+                    if (t > this.progress) break;
+
+                    let pt = this.getPoint(t);
+                    
+                    let currentWidth = this.baseWidth * (1 - (t * 0.4)); 
+
+                    ctx.beginPath();
+                    ctx.moveTo(prevPt.x, prevPt.y);
+                    ctx.lineTo(pt.x, pt.y);
+                    ctx.lineWidth = currentWidth;
+                    ctx.lineCap = 'round';
+                    ctx.lineJoin = 'round';
+                    ctx.stroke();
+                    
+                    prevPt = pt;
+                }
+            }
+        }
+
+        function startExperience() {
+            btnContainer.style.opacity = '0';
+            btnContainer.style.visibility = 'hidden';
+            
+            // Movido el inicio del árbol ligeramente a la derecha para dar espacio a la muñeca
+            const startX = isMobile ? width * 0.55 : width * 0.35;
+            const startY = height;
+            
+            const trunkWidth = isMobile ? 45 : 65;
+            const trunkLength = height * 0.25; 
+            const maxDepth = isMobile ? 6 : 7;
+
+            branches.push(new OrganicBranch(startX, startY, -Math.PI / 2, trunkLength, trunkWidth, 0, maxDepth));
+
+            isAnimating = true;
+            
+            setTimeout(() => {
+                pergaminoContainer.classList.add('show');
+                girlfriendDoll.classList.add('show');
+            }, 4500); 
+
+            animate();
+        }
+
+        function animate() {
+            ctx.fillStyle = colors.bg;
+            ctx.fillRect(0, 0, width, height);
+
+            if (branches.length > 10 && Math.random() < 0.1) {
+                let randomBranch = branches[Math.floor(Math.random() * branches.length)];
+                sparkles.push(new Sparkle(randomBranch.endX + (Math.random()-0.5)*100, randomBranch.endY + (Math.random()-0.5)*100));
+            }
+
+            if (activeTips.length > 0 && Math.random() < 0.2) {
+                let tip = activeTips[Math.floor(Math.random() * activeTips.length)];
+                let colorPalette = Math.random() > 0.5 ? colors.lilac : colors.yellow;
+                petals.push(new FallingPetal(tip.x + (Math.random()-0.5)*40, tip.y + (Math.random()-0.5)*40, colorPalette));
+            }
+
+            for (let i = 0; i < branches.length; i++) {
+                branches[i].update();
+                branches[i].draw(ctx);
+            }
+
+            for (let i = 0; i < flowers.length; i++) {
+                flowers[i].update();
+                flowers[i].draw(ctx);
+            }
+
+            for (let i = sparkles.length - 1; i >= 0; i--) {
+                sparkles[i].update();
+                sparkles[i].draw(ctx);
+                if (sparkles[i].alpha <= 0 && sparkles[i].state === 'out') {
+                    sparkles.splice(i, 1);
+                }
+            }
+
+            for (let i = petals.length - 1; i >= 0; i--) {
+                petals[i].update();
+                petals[i].draw(ctx);
+                if (petals[i].alpha <= 0) {
+                    petals.splice(i, 1);
+                }
+            }
+
+            if (isAnimating) {
+                animationFrameId = requestAnimationFrame(animate);
+            }
+        }
+
+        startBtn.addEventListener('click', startExperience);
+
+        ctx.fillStyle = colors.bg;
+        ctx.fillRect(0, 0, width, height);
+
+    </script>
+</body>
+</html>
