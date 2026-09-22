@@ -1,4 +1,4 @@
-\<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -173,19 +173,71 @@
         .pergamino::-webkit-scrollbar-track { background: transparent; }
         .pergamino::-webkit-scrollbar-thumb { background: var(--paper-border); border-radius: 10px; }
 
-        /* --- MUÑECA --- */
-        #girlfriend-doll {
+        /* --- CONTENEDOR DE LA MUÑECA Y BURBUJA --- */
+        #doll-wrapper {
             position: absolute;
             bottom: 2%; 
             left: 5%;
+            z-index: 15;
+            pointer-events: none;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        #girlfriend-doll {
             width: 22vw;
             max-width: 200px;
             min-width: 110px;
             opacity: 0;
             transition: opacity 3.5s ease;
             mix-blend-mode: multiply; 
-            z-index: 15;
-            pointer-events: none; 
+        }
+
+        /* --- BURBUJA FLOTANTE DE VERO --- */
+        #speech-bubble {
+            position: absolute;
+            top: -10px;
+            left: 70%;
+            background-color: var(--paper-bg);
+            border: 1px solid var(--paper-border);
+            color: var(--text-dark);
+            font-family: 'Great Vibes', cursive;
+            font-size: 2.2rem;
+            padding: 0.2rem 1.2rem;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            opacity: 0;
+            transition: opacity 3.5s ease;
+            white-space: nowrap;
+        }
+
+        /* Coletilla / Triangulito de la burbuja */
+        #speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 18px;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 8px 8px 0 0;
+            border-color: var(--paper-bg) transparent transparent transparent;
+            display: block;
+            z-index: 2;
+        }
+
+        #speech-bubble::before {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 17px;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 9px 9px 0 0;
+            border-color: var(--paper-border) transparent transparent transparent;
+            display: block;
+            z-index: 1;
         }
 
         @keyframes tenderFloat {
@@ -194,8 +246,12 @@
             100% { transform: translateY(0px) scale(1); }
         }
 
-        #girlfriend-doll.show {
+        #doll-wrapper.show #girlfriend-doll,
+        #doll-wrapper.show #speech-bubble {
             opacity: 1;
+        }
+
+        #doll-wrapper.show {
             animation: tenderFloat 4s ease-in-out infinite;
         }
 
@@ -242,11 +298,21 @@
                 padding-top: 1rem;
             }
 
-            #girlfriend-doll {
+            #doll-wrapper {
                 left: 3%;
                 bottom: 49vh; 
+            }
+
+            #girlfriend-doll {
                 max-width: 100px;
                 min-width: 80px;
+            }
+
+            #speech-bubble {
+                font-size: 1.6rem;
+                padding: 0.1rem 0.9rem;
+                top: -12px;
+                left: 65%;
             }
         }
     </style>
@@ -259,7 +325,10 @@
 
     <div id="canvas-container">
         <canvas id="main-canvas"></canvas>
-        <img id="girlfriend-doll" src="Gemini_Generated_Image_z3yyeaz3yyeaz3yy.jpeg" alt="Mi hermosa novia con su ramo" onerror="this.src='https://placehold.co/220x400/transparent/3A2A18?text=Mi+Novia'" />
+        <div id="doll-wrapper">
+            <img id="girlfriend-doll" src="Gemini_Generated_Image_z3yyeaz3yyeaz3yy.jpeg" alt="Mi hermosa novia con su ramo" onerror="this.src='https://placehold.co/220x400/transparent/3A2A18?text=Mi+Novia'" />
+            <div id="speech-bubble">Vero</div>
+        </div>
     </div>
 
     <div id="pergamino-container">
@@ -300,7 +369,7 @@
         const startBtn = document.getElementById('start-btn');
         const btnContainer = document.getElementById('start-btn-container');
         const pergaminoContainer = document.getElementById('pergamino-container');
-        const girlfriendDoll = document.getElementById('girlfriend-doll');
+        const dollWrapper = document.getElementById('doll-wrapper');
 
         let width, height;
         let isAnimating = false;
@@ -582,7 +651,7 @@
             
             setTimeout(() => {
                 pergaminoContainer.classList.add('show');
-                girlfriendDoll.classList.add('show');
+                dollWrapper.classList.add('show');
             }, 3800); 
 
             animate();
