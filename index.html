@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+\<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -13,6 +13,10 @@
             --paper-border: #D4C3A3;
             --text-dark: #3A2A18;
             --text-light: #5A442E;
+        }
+
+        * {
+            box-sizing: border-box;
         }
 
         body, html {
@@ -38,9 +42,9 @@
         }
 
         #start-btn {
-            padding: 1.2rem 5rem;
-            font-size: 1.5rem;
-            letter-spacing: 5px;
+            padding: 1.2rem 4rem;
+            font-size: 1.4rem;
+            letter-spacing: 4px;
             color: #222;
             background: transparent;
             border: 2px solid #222;
@@ -61,7 +65,7 @@
             color: #fff;
             transform: scale(1.03);
             box-shadow: 0 12px 30px rgba(0,0,0,0.15);
-            letter-spacing: 7px;
+            letter-spacing: 6px;
         }
 
         #canvas-container {
@@ -78,6 +82,7 @@
             height: 100%;
         }
 
+        /* --- PERGAMINO ESCRITORIO --- */
         #pergamino-container {
             position: absolute;
             top: 0;
@@ -100,14 +105,14 @@
             background-color: var(--paper-bg);
             background-image: 
                 url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
-            border-radius: 2px;
+            border-radius: 4px;
             box-shadow: 
                 0 25px 50px -12px rgba(0, 0, 0, 0.25),
                 inset 0 0 60px rgba(139, 90, 43, 0.05);
-            padding: 4rem 3rem;
-            max-width: 550px;
+            padding: 3.5rem 2.5rem;
+            max-width: 520px;
             width: 100%;
-            max-height: 90vh;
+            max-height: 88vh;
             overflow-y: auto;
             pointer-events: auto;
             position: relative;
@@ -122,8 +127,8 @@
             border-top: 1px solid var(--paper-border);
             border-bottom: 1px solid var(--paper-border);
         }
-        .pergamino::before { top: 20px; }
-        .pergamino::after { bottom: 20px; }
+        .pergamino::before { top: 18px; }
+        .pergamino::after { bottom: 18px; }
 
         #pergamino-container.show {
             opacity: 1;
@@ -133,32 +138,32 @@
 
         .titulo-poema {
             font-family: 'Great Vibes', cursive;
-            font-size: 4.5rem;
+            font-size: 4rem;
             color: var(--text-dark);
             text-align: center;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.2rem;
             line-height: 1;
             font-weight: 400;
         }
 
         .texto-poema {
             font-family: 'Lora', serif;
-            font-size: 1.25rem;
-            line-height: 2;
+            font-size: 1.15rem;
+            line-height: 1.9;
             color: var(--text-light);
             text-align: center;
-            margin-bottom: 2.5rem;
+            margin-bottom: 2rem;
             font-style: italic;
         }
 
         .dedicatoria {
             font-family: 'Cinzel', serif;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             line-height: 1.8;
             color: var(--text-dark);
             text-align: center;
             border-top: 1px dashed var(--paper-border);
-            padding-top: 2rem;
+            padding-top: 1.5rem;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -168,14 +173,14 @@
         .pergamino::-webkit-scrollbar-track { background: transparent; }
         .pergamino::-webkit-scrollbar-thumb { background: var(--paper-border); border-radius: 10px; }
 
-        /* Estilos ajustados para evitar superposición */
+        /* --- MUÑECA --- */
         #girlfriend-doll {
             position: absolute;
             bottom: 2%; 
-            left: 5%; /* Movida a la izquierda */
-            width: 25vw;
-            max-width: 220px; /* Tamaño ligeramente ajustado */
-            min-width: 120px;
+            left: 5%;
+            width: 22vw;
+            max-width: 200px;
+            min-width: 110px;
             opacity: 0;
             transition: opacity 3.5s ease;
             mix-blend-mode: multiply; 
@@ -185,7 +190,7 @@
 
         @keyframes tenderFloat {
             0% { transform: translateY(0px) scale(1); }
-            50% { transform: translateY(-12px) scale(1.02); }
+            50% { transform: translateY(-10px) scale(1.02); }
             100% { transform: translateY(0px) scale(1); }
         }
 
@@ -194,29 +199,54 @@
             animation: tenderFloat 4s ease-in-out infinite;
         }
 
-        @media (max-width: 1024px) {
+        /* --- DISEÑO RESPONSIVE PARA CELULARES Y TABLETS --- */
+        @media (max-width: 820px) {
+            #start-btn {
+                padding: 1rem 3rem;
+                font-size: 1.2rem;
+                letter-spacing: 3px;
+            }
+
             #pergamino-container {
                 width: 100%;
-                height: auto;
+                height: 48vh;
                 top: auto;
                 bottom: 0;
-                padding: 1.5rem;
-                padding-bottom: 2rem;
+                right: 0;
+                padding: 0.8rem 1rem 1.2rem 1rem;
             }
+
             .pergamino {
                 max-width: 100%;
-                padding: 2.5rem 1.5rem;
-                max-height: 50vh;
-                background-color: rgba(249, 244, 232, 0.92); 
-                backdrop-filter: blur(5px);
+                padding: 2rem 1.2rem;
+                max-height: 100%;
+                border-radius: 16px 16px 0 0;
+                box-shadow: 0 -10px 25px rgba(0, 0, 0, 0.15);
+                background-color: rgba(249, 244, 232, 0.95);
+                backdrop-filter: blur(4px);
             }
-            .titulo-poema { font-size: 3.5rem; }
-            .texto-poema { font-size: 1.1rem; line-height: 1.8; }
+
+            .titulo-poema { 
+                font-size: 2.8rem; 
+                margin-bottom: 0.8rem;
+            }
+
+            .texto-poema { 
+                font-size: 0.95rem; 
+                line-height: 1.7; 
+                margin-bottom: 1.2rem;
+            }
+
+            .dedicatoria {
+                font-size: 0.75rem;
+                padding-top: 1rem;
+            }
 
             #girlfriend-doll {
-                left: 2%; /* Más a la izquierda en celulares */
-                bottom: 50vh; 
-                max-width: 140px;
+                left: 3%;
+                bottom: 49vh; 
+                max-width: 100px;
+                min-width: 80px;
             }
         }
     </style>
@@ -254,7 +284,7 @@
                 <p>sino de este modo en que no soy ni eres,<br>
                 tan cerca que tu mano sobre mi pecho es mía,<br>
                 tan cerca que se cierran tus ojos con mi sueño.</p>
-                <p style="text-align: right; margin-top: 1.5rem; font-weight: 600; font-style: normal; font-size: 1.1rem;">- Pablo Neruda</p>
+                <p style="text-align: right; margin-top: 1.2rem; font-weight: 600; font-style: normal; font-size: 1rem;">- Pablo Neruda</p>
             </div>
 
             <div class="dedicatoria">
@@ -297,7 +327,7 @@
             height = window.innerHeight;
             canvas.width = width;
             canvas.height = height;
-            isMobile = width <= 1024;
+            isMobile = width <= 820;
             
             if (!isAnimating) {
                 ctx.fillStyle = colors.bg;
@@ -380,7 +410,7 @@
             constructor(x, y, delay = 0) {
                 this.x = x + (Math.random() - 0.5) * 20; 
                 this.y = y + (Math.random() - 0.5) * 20;
-                this.maxRadius = Math.random() * 6 + 4;
+                this.maxRadius = Math.random() * 5 + 3.5;
                 this.radius = 0;
                 this.growRate = Math.random() * 0.2 + 0.1;
                 this.delay = delay;
@@ -495,7 +525,7 @@
                                 branches.push(new OrganicBranch(this.endX, this.endY, childAngle, childLength, childWidth, this.depth+1, this.maxDepth));
                             }
                         } else {
-                            let numFlowers = Math.floor(Math.random() * 12) + 8;
+                            let numFlowers = Math.floor(Math.random() * 10) + 6;
                             for(let f=0; f<numFlowers; f++) {
                                 flowers.push(new Flower(this.endX, this.endY, Math.floor(Math.random() * 30)));
                             }
@@ -512,8 +542,6 @@
                 else ctx.strokeStyle = colors.treeLight;
 
                 const segments = 15;
-                const limit = Math.floor(this.progress * segments);
-                
                 let prevPt = {x: this.startX, y: this.startY};
                 
                 for(let i = 1; i <= segments; i++) {
@@ -521,7 +549,6 @@
                     if (t > this.progress) break;
 
                     let pt = this.getPoint(t);
-                    
                     let currentWidth = this.baseWidth * (1 - (t * 0.4)); 
 
                     ctx.beginPath();
@@ -541,13 +568,13 @@
             btnContainer.style.opacity = '0';
             btnContainer.style.visibility = 'hidden';
             
-            // Movido el inicio del árbol ligeramente a la derecha para dar espacio a la muñeca
-            const startX = isMobile ? width * 0.55 : width * 0.35;
-            const startY = height;
+            // Posición inicial ajustada para celulares vs computadoras
+            const startX = isMobile ? width * 0.5 : width * 0.35;
+            const startY = isMobile ? height * 0.51 : height;
             
-            const trunkWidth = isMobile ? 45 : 65;
-            const trunkLength = height * 0.25; 
-            const maxDepth = isMobile ? 6 : 7;
+            const trunkWidth = isMobile ? 36 : 60;
+            const trunkLength = isMobile ? height * 0.16 : height * 0.24; 
+            const maxDepth = isMobile ? 5 : 7;
 
             branches.push(new OrganicBranch(startX, startY, -Math.PI / 2, trunkLength, trunkWidth, 0, maxDepth));
 
@@ -556,7 +583,7 @@
             setTimeout(() => {
                 pergaminoContainer.classList.add('show');
                 girlfriendDoll.classList.add('show');
-            }, 4500); 
+            }, 3800); 
 
             animate();
         }
